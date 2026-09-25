@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#171513">
+<title>Отмыв отпуска — Pinocchio</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#11100f;color:#f5eee4;font-family:Georgia,serif;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 0,#4b3b2a 0,#211d18 34%,#11100f 75%);pointer-events:none}
+.wrap{min-height:100vh;display:flex;justify-content:center;padding:18px}.card{position:relative;width:min(460px,100%);min-height:820px;border:1px solid #9c805b;border-radius:28px;overflow:hidden;padding:52px 28px 34px;text-align:center;background:#171513dd;box-shadow:0 30px 100px #000b;animation:appear .9s ease both}
+@keyframes appear{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}
+.decor{font-size:42px;letter-spacing:10px;animation:float 3s ease-in-out infinite}.small{font:11px Arial,sans-serif;letter-spacing:4px;text-transform:uppercase;color:#cbb898;margin-top:14px}
+h1{font-size:44px;line-height:1.02;font-weight:400;margin:25px 0 12px}.line{height:1px;width:72px;background:#ad8c61;margin:24px auto}.date{font-size:26px}.time{font:12px Arial,sans-serif;letter-spacing:3px;color:#cdbb9f;margin-top:8px}.place{font-size:29px;margin-top:38px}.city{font:11px Arial,sans-serif;letter-spacing:3px;color:#a9977e;margin-top:7px}
+p{font:15px/1.7 Arial,sans-serif;color:#ddd3c6;max-width:340px;margin:28px auto}.quote{font-style:italic;color:#cbb99f}
+.count{display:flex;justify-content:center;gap:8px;margin:24px 0}.box{min-width:62px;padding:10px 7px;border:1px solid #6f5b43;border-radius:12px;background:#201c18}.num{font-size:22px}.lbl{font:9px Arial,sans-serif;letter-spacing:1px;color:#a99880}
+.buttons{display:grid;gap:10px;margin:25px auto;max-width:310px}.btn{display:block;padding:14px 18px;border-radius:999px;text-decoration:none;font:12px Arial,sans-serif;letter-spacing:1px;cursor:pointer;border:1px solid #9c805b;color:#171513;background:#d7c09d}.btn.alt{background:transparent;color:#e8dccb}.btn:hover{filter:brightness(1.08)}
+.footer{margin-top:35px;font:10px Arial,sans-serif;letter-spacing:2px;color:#877965}.music{position:absolute;right:18px;top:18px;border:1px solid #806b50;background:#201c18;color:#ddc9aa;border-radius:50%;width:38px;height:38px;cursor:pointer}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#e0c69f;color:#181411;padding:13px 18px;border-radius:999px;font:12px Arial,sans-serif;z-index:20;transition:.35s;white-space:nowrap}
+#toast.show{opacity:1;transform:translate(-50%,0)}canvas{position:fixed;inset:0;pointer-events:none;z-index:10}
+@keyframes float{50%{transform:translateY(-5px)}} 
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas><div id="toast"></div>
+<div class="wrap"><main class="card">
+<button class="music" id="music" aria-label="Музыка">♫</button>
+<div class="decor">🥂</div>
+<div class="small">Персональное приглашение</div>
+<h1>Отмыв<br>отпуска</h1><div class="line"></div>
+<div class="date">28 сентября</div><div class="time">ВО ВРЕМЯ ОБЕДА</div>
+<div class="place">Pinocchio</div><div class="city">АСТАНА</div>
+<p>Уважаемые коллеги!<br>Приглашаю вас провести обед в приятной компании и вместе отметить мой отпуск.</p>
+<p class="quote">«Отпуск отпускаем, но настроение оставляем»</p>
+
+<div class="count" id="count"><div class="box"><div class="num" id="d">—</div><div class="lbl">ДНЕЙ</div></div><div class="box"><div class="num" id="h">—</div><div class="lbl">ЧАСОВ</div></div><div class="box"><div class="num" id="m">—</div><div class="lbl">МИНУТ</div></div><div class="box"><div class="num" id="s">—</div><div class="lbl">СЕКУНД</div></div></div>
+
+<div class="buttons">
+<a class="btn" href="https://2gis.kz/astana/geo/70000001113739485" target="_blank">📍 Построить маршрут</a>
+<a class="btn alt" href="#" id="calendar">📅 Добавить в календарь</a>
+<a class="btn alt" href="https://wa.me/?text=Буду%20на%20отмыве%20отпуска%2028%20сентября%20в%20Pinocchio%20🥂" target="_blank">💬 Я буду!</a>
+<button class="btn alt" id="secret">🥂 Нажать для хорошего настроения</button>
+</div>
+<div class="footer">До встречи за одним столом • Дамир</div>
+</main></div>
+
+<script>
+const target=new Date('2026-09-28T13:00:00+05:00').getTime();
+function tick(){let x=Math.max(0,target-Date.now());let s=Math.floor(x/1000),d=Math.floor(s/86400);s%=86400;let h=Math.floor(s/3600);s%=3600;let m=Math.floor(s/60);s%=60;
+document.getElementById('d').textContent=d;document.getElementById('h').textContent=String(h).padStart(2,'0');document.getElementById('m').textContent=String(m).padStart(2,'0');document.getElementById('s').textContent=String(s).padStart(2,'0')}
+tick();setInterval(tick,1000);
+
+document.getElementById('calendar').onclick=e=>{e.preventDefault();const ics=`BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:20260928T130000
+DTEND:20260928T150000
+SUMMARY:Отмыв отпуска — Pinocchio
+LOCATION:Pinocchio, Астана
+DESCRIPTION:Обед с коллегами. До встречи за одним столом!
+END:VEVENT
+END:VCALENDAR`;const a=document.createElement('a');a.href='data:text/calendar;charset=utf8,'+encodeURIComponent(ics);a.download='otmyv-otpuska.ics';a.click();toast('Календарь подготовлен 📅')};
+
+function toast(t){const x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2500)}
+const c=document.getElementById('confetti'),ctx=c.getContext('2d');function resize(){c.width=innerWidth;c.height=innerHeight}resize();addEventListener('resize',resize);
+function party(){let a=Array.from({length:120},()=>({x:innerWidth/2,y:innerHeight*.55,vx:(Math.random()-.5)*10,vy:-Math.random()*10-3,g:0.25,r:Math.random()*5+2,rot:Math.random()*6.28}));let start=performance.now();function f(t){ctx.clearRect(0,0,c.width,c.height);a.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.rot+=.15;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=['#d7c09d','#fff1d5','#9c805b','#e2b96f'][Math.floor(Math.random()*4)];ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*2);ctx.restore()});if(t-start<2600)requestAnimationFrame(f);else ctx.clearRect(0,0,c.width,c.height)}requestAnimationFrame(f)}
+document.getElementById('secret').onclick=()=>{party();toast('Ну всё, отмыв официально начался! 🥂')};
+
+let audioCtx=null,on=false;document.getElementById('music').onclick=()=>{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(on){audioCtx.suspend();on=false;toast('Музыка выключена')}else{audioCtx.resume();on=true;play();toast('Музыка включена ♫')}};function play(){if(!on)return;let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=[196,246.94,293.66,392][Math.floor(Math.random()*4)];o.type='sine';g.gain.value=.025;o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.8);setTimeout(play,900)}
+</script>
+</body>
+</html>
