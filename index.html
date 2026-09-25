@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#11100f">
+<title>Обмыв отпуска — Pinocchio</title>
+
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  background:#11100f;
+  color:#f4eee7;
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.22;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(255,255,255,.08),transparent 25%),
+    radial-gradient(circle at 80% 70%,rgba(255,255,255,.05),transparent 28%);
+}
+.wrap{
+  width:min(100%,560px);
+  margin:auto;
+  padding:28px 18px 45px;
+  position:relative;
+}
+.card{
+  position:relative;
+  overflow:hidden;
+  min-height:calc(100vh - 56px);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:30px;
+  padding:36px 22px;
+  background:linear-gradient(145deg,#201d1a,#151413 55%,#1d1916);
+  box-shadow:0 25px 70px rgba(0,0,0,.45);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+}
+.card:before{
+  content:"";
+  position:absolute;
+  width:280px;height:280px;
+  top:-150px;right:-120px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 0 0 30px rgba(255,255,255,.02),0 0 0 60px rgba(255,255,255,.015);
+}
+.decor{
+  font-size:25px;
+  letter-spacing:12px;
+  opacity:.8;
+  margin-bottom:20px;
+}
+.badge{
+  display:inline-block;
+  margin:0 auto 18px;
+  padding:8px 15px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:100px;
+  font-size:11px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:#cfc3b7;
+}
+h1{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(42px,12vw,68px);
+  line-height:.95;
+  font-weight:400;
+  letter-spacing:-2px;
+}
+h1 span{
+  display:block;
+  font-size:.58em;
+  letter-spacing:1px;
+  margin-top:12px;
+  color:#cfc3b7;
+}
+.line{
+  width:65px;
+  height:1px;
+  background:#d8cbbd;
+  opacity:.7;
+  margin:27px auto;
+}
+.text{
+  max-width:420px;
+  margin:0 auto;
+  color:#d8d0c8;
+  font-size:16px;
+  line-height:1.7;
+}
+.info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:28px 0 12px;
+}
+.info-box{
+  padding:17px 10px;
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
+}
+.label{
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:#9f958c;
+  margin-bottom:7px;
+}
+.value{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:18px;
+}
+.address{
+  margin-top:10px;
+  padding:17px;
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
+}
+.address .value{font-size:16px}
+.buttons{
+  display:grid;
+  gap:10px;
+  margin-top:22px;
+}
+button,.btn{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  padding:15px 18px;
+  font-size:15px;
+  font-weight:600;
+  text-decoration:none;
+  cursor:pointer;
+  transition:.2s;
+  display:block;
+}
+.btn-main{
+  background:#eee6dd;
+  color:#171513;
+}
+.btn-main:active{transform:scale(.98)}
+.btn-dark{
+  color:#eee6dd;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.13);
+}
+.countdown{
+  margin-top:25px;
+  color:#9f958c;
+  font-size:12px;
+  letter-spacing:1px;
+}
+.countdown strong{
+  color:#eee6dd;
+  font-size:14px;
+}
+.footer{
+  margin-top:28px;
+  color:#77716b;
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.confetti{
+  position:fixed;
+  width:7px;height:7px;
+  top:-10px;
+  pointer-events:none;
+  animation:fall 3s linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(720deg);opacity:0}
+}
+@keyframes appear{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.card>*{animation:appear .8s ease both}
+.card>*:nth-child(2){animation-delay:.08s}
+.card>*:nth-child(3){animation-delay:.16s}
+.card>*:nth-child(4){animation-delay:.24s}
+.card>*:nth-child(5){animation-delay:.32s}
+.card>*:nth-child(6){animation-delay:.40s}
+.card>*:nth-child(7){animation-delay:.48s}
+.card>*:nth-child(8){animation-delay:.56s}
+@media(max-width:380px){
+  .wrap{padding:12px}
+  .card{padding:30px 16px;border-radius:24px}
+  .info{gap:7px}
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ ЭФФЕКТЫ ===== */
+.hero-note{
+  margin:18px auto 0;
+  padding:12px 16px;
+  max-width:390px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  color:#aaa098;
+  font-size:12px;
+  line-height:1.6;
+}
+.section{
+  margin-top:16px;
+  padding-top:4px;
+}
+.section-title{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:27px;
+  font-weight:400;
+  margin:0 0 15px;
+}
+.program{
+  display:grid;
+  gap:9px;
+}
+.program-item{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  padding:14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+}
+.program-time{
+  min-width:54px;
+  font-family:Georgia,serif;
+  color:#e9dfd4;
+}
+.program-text{
+  font-size:13px;
+  color:#bdb4ac;
+  line-height:1.45;
+}
+.game{
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:19px;
+  padding:17px;
+  background:rgba(255,255,255,.035);
+}
+.game-title{
+  font-family:Georgia,serif;
+  font-size:19px;
+  margin-bottom:7px;
+}
+.game p{
+  color:#aaa19a;
+  font-size:12px;
+  line-height:1.55;
+  margin:0 0 13px;
+}
+.challenge{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.challenge button{
+  background:#211f1c;
+  color:#e9dfd4;
+  border:1px solid rgba(255,255,255,.09);
+  padding:12px 8px;
+  border-radius:13px;
+  font-size:12px;
+}
+.challenge button.selected{
+  background:#eee6dd;
+  color:#171513;
+}
+.score{
+  text-align:center;
+  margin-top:13px;
+  color:#9f958c;
+  font-size:12px;
+}
+.wish{
+  width:100%;
+  min-height:95px;
+  resize:none;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,.1);
+  background:#151412;
+  color:#eee6dd;
+  padding:14px;
+  font:14px/1.5 Arial,sans-serif;
+  outline:none;
+}
+.wish:focus{border-color:rgba(255,255,255,.28)}
+.saved{
+  display:none;
+  margin-top:10px;
+  color:#b9afa6;
+  font-size:12px;
+}
+.mini-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.mini{
+  min-height:78px;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,.07);
+  background:linear-gradient(145deg,#211e1b,#171614);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:7px;
+  color:#b9afa6;
+  font-size:10px;
+  text-align:center;
+}
+.mini b{
+  font-size:20px;
+  color:#eee6dd;
+}
+.reveal{
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transition:.5s ease;
+}
+.reveal.open{
+  max-height:250px;
+  opacity:1;
+  margin-top:12px;
+}
+.big-quote{
+  font-family:Georgia,serif;
+  font-size:22px;
+  line-height:1.45;
+  color:#eee6dd;
+  margin:0;
+}
+.names{
+  margin-top:11px;
+  color:#8e8780;
+  font-size:11px;
+}
+
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <main class="card">
+
+    <div class="decor">✦ ✦ ✦</div>
+
+    <div class="badge">Приглашение</div>
+
+    <h1>
+      Обмыв
+      <span>отпуска</span>
+    </h1>
+
+    <div class="line"></div>
+
+    <p class="text">
+      Друзья, приглашаю вас вместе отметить начало моего отпуска.
+      Буду рад увидеть каждого — хорошая компания, вкусная еда
+      и вечер, который точно стоит запомнить.
+    </p>
+
+    <section class="info">
+      <div class="info-box">
+        <span class="label">Дата</span>
+        <div class="value">28 сентября</div>
+      </div>
+
+      <div class="info-box">
+        <span class="label">Время</span>
+        <div class="value">Во время обеда</div>
+      </div>
+    </section>
+
+    <div class="address">
+      <span class="label">Место встречи</span>
+      <div class="value">Ресторан Pinocchio</div>
+    </div>
+
+    <div class="buttons">
+      <a class="btn btn-main"
+         href="https://2gis.kz/astana/geo/70000001113739485"
+         target="_blank">
+        📍 Открыть место в 2ГИС
+      </a>
+
+      <button class="btn btn-dark" onclick="confirmComing()">
+        ✓ Я буду
+      </button>
+    </div>
+
+    <div class="countdown">
+      До встречи:
+      <strong id="timer">загрузка...</strong>
+    </div>
+
+
+    <section class="section">
+      <h2 class="section-title">Как всё будет</h2>
+      <div class="program">
+        <div class="program-item">
+          <div class="program-time">12:30</div>
+          <div class="program-text"><b>Сбор гостей</b><br>Встречаемся, здороваемся и выбираем самые удобные места.</div>
+        </div>
+        <div class="program-item">
+          <div class="program-time">13:00</div>
+          <div class="program-text"><b>Обед</b><br>Главное блюдо дня — хорошая компания.</div>
+        </div>
+        <div class="program-item">
+          <div class="program-time">14:00</div>
+          <div class="program-text"><b>Свободная программа</b><br>Разговоры, шутки, истории и немного безумия.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Немного интерактива</h2>
+      <div class="game">
+        <div class="game-title">🎯 Кто лучше знает виновника торжества?</div>
+        <p>Выбери вариант. За правильный ответ — +1 балл. Проверим при встрече.</p>
+        <div class="challenge">
+          <button onclick="answer(this,false)">☕ Кофе</button>
+          <button onclick="answer(this,true)">🥤 Что-нибудь холодное</button>
+          <button onclick="answer(this,true)">⚽ Футбол</button>
+          <button onclick="answer(this,false)">🎸 Рок-концерт</button>
+        </div>
+        <div class="score">Ваш счёт: <strong id="score">0</strong></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Оставь пожелание</h2>
+      <textarea id="wish" class="wish" placeholder="Напиши пару слов — прочитаю во время обеда 😉"></textarea>
+      <button class="btn btn-main" style="margin-top:9px" onclick="saveWish()">💬 Сохранить пожелание</button>
+      <div id="saved" class="saved">✓ Пожелание сохранено на этом устройстве</div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Для настроения</h2>
+      <div class="mini-grid">
+        <div class="mini"><b>🥂</b>За отпуск</div>
+        <div class="mini"><b>🍽</b>За обед</div>
+        <div class="mini"><b>😂</b>За истории</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="game" style="text-align:center">
+        <p class="big-quote">«Пусть этот обед станет началом хорошего отпуска и ещё более хороших историй.»</p>
+        <div class="names">28 сентября · Pinocchio · Астана</div>
+      </div>
+    </section>
+
+    <div class="footer">Буду ждать вас • Pinocchio</div>
+
+  </main>
+</div>
+
+<script>
+const eventDate = new Date("2026-09-28T13:00:00+05:00");
+
+function updateTimer(){
+  const now = new Date();
+  const diff = eventDate - now;
+  const el = document.getElementById("timer");
+
+  if(diff <= 0){
+    el.textContent = "время пришло 🥂";
+    return;
+  }
+
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor(diff / 3600000) % 24;
+  const mins = Math.floor(diff / 60000) % 60;
+  const secs = Math.floor(diff / 1000) % 60;
+
+  el.textContent =
+    `${days} дн. ${hours} ч. ${mins} мин. ${secs} сек.`;
+}
+updateTimer();
+setInterval(updateTimer,1000);
+
+function confirmComing(){
+  if(navigator.vibrate) navigator.vibrate(40);
+
+  const messages = [
+    "Отлично! 🥂 Жду тебя!",
+    "Записал! До встречи 🍷",
+    "Вот это настрой! 🔥",
+    "Будет хороший вечер ✨"
+  ];
+
+  const message =
+    messages[Math.floor(Math.random()*messages.length)];
+
+  const toast = document.createElement("div");
+  toast.textContent = message;
+
+  Object.assign(toast.style,{
+    position:"fixed",
+    left:"50%",
+    bottom:"28px",
+    transform:"translateX(-50%)",
+    background:"#eee6dd",
+    color:"#171513",
+    padding:"14px 20px",
+    borderRadius:"14px",
+    fontSize:"14px",
+    fontWeight:"600",
+    zIndex:"9999",
+    boxShadow:"0 10px 35px rgba(0,0,0,.4)"
+  });
+
+  document.body.appendChild(toast);
+
+  for(let i=0;i<18;i++){
+    const c=document.createElement("i");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.animationDelay=Math.random()*.4+"s";
+    c.style.background=[
+      "#eee6dd","#cfc3b7","#9f958c","#ffffff"
+    ][Math.floor(Math.random()*4)];
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3400);
+  }
+
+  setTimeout(()=>toast.remove(),2200);
+}
+
+function answer(btn, correct){
+  if(btn.classList.contains("selected")) return;
+  btn.classList.add("selected");
+  if(correct){
+    const score=document.getElementById("score");
+    score.textContent = Number(score.textContent)+1;
+    btn.textContent = "✓ " + btn.textContent.replace("✓ ","");
+  }else{
+    btn.textContent = "× " + btn.textContent.replace("× ","");
+  }
+}
+
+function saveWish(){
+  const value=document.getElementById("wish").value.trim();
+  if(!value) return;
+  try{ localStorage.setItem("pinocchio_wish",value); }catch(e){}
+  document.getElementById("saved").style.display="block";
+}
+
+try{
+  const oldWish=localStorage.getItem("pinocchio_wish");
+  if(oldWish){
+    document.getElementById("wish").value=oldWish;
+    document.getElementById("saved").style.display="block";
+  }
+}catch(e){}
+
+</script>
+
+</body>
+</html>
